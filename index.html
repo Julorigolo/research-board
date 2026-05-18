@@ -495,6 +495,187 @@ select.form-input { cursor: pointer; }
 }
 .overlay-sidebar.open { display: block; }
 
+/* SUMMARY MODAL */
+.summary-modal { max-width: 480px; }
+.summary-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0;
+  color: var(--text-2);
+  font-size: 13px;
+}
+.summary-spinner {
+  width: 16px; height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.summary-source {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.summary-points {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.summary-point {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.summary-point-num {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  font-family: 'DM Mono', monospace;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+.summary-point-text {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.55;
+}
+.summary-verdict {
+  padding: 10px 12px;
+  background: #EEEDFE;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: #3C3489;
+  line-height: 1.5;
+  font-style: italic;
+  margin-bottom: 14px;
+}
+.summary-verdict strong { font-style: normal; font-weight: 500; display: block; margin-bottom: 3px; font-size: 11px; text-transform: uppercase; letter-spacing: .4px; }
+.summary-error {
+  padding: 14px;
+  background: #FAECE7;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: #712B13;
+  line-height: 1.5;
+}
+.summary-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text-2);
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color .15s;
+}
+.summary-save-btn:hover { border-color: var(--border-strong); color: var(--text); }
+
+/* CUSTOM TAG INPUT */
+.tag-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.tag-input-wrap input {
+  flex: 1;
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 20px;
+  border: 1px dashed var(--border-strong);
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+}
+.tag-input-wrap input::placeholder { color: var(--text-3); }
+.tag-input-wrap button {
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: none;
+  background: var(--border);
+  color: var(--text-2);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
+.tag-input-wrap button:hover { background: var(--border-strong); color: var(--text); }
+.tag-custom { background: var(--bg); color: var(--text-2); border: 1px solid var(--border-strong); }
+.tag-custom.selected { background: var(--text); color: var(--surface); border-color: var(--text); }
+
+/* PDF CARD */
+.cprev-pdf { background: #FAECE7; color: #712B13; }
+.badge-pdf { background: #D85A30; }
+
+/* EXPORT MODAL */
+.export-modal { max-width: 460px; }
+.export-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.export-option:hover { border-color: var(--border-strong); }
+.export-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.export-label { font-size: 13px; font-weight: 500; color: var(--text); }
+.export-desc { font-size: 11px; color: var(--text-2); line-height: 1.5; margin-top: 2px; }
+.export-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color .15s;
+  margin-top: 8px;
+}
+.export-btn:hover { border-color: var(--border-strong); }
+
+/* TOPBAR EXPORT BTN */
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  background: none;
+  color: var(--text-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+  transition: border-color .15s, color .15s;
+}
+.btn-secondary:hover { border-color: var(--border-strong); color: var(--text); }
+
 /* FOLDER DELETE */
 .sb-item .del-folder {
   display: none;
@@ -558,6 +739,10 @@ select.form-input { cursor: pointer; }
         <span style="color:var(--text-3);font-size:14px">⌕</span>
         <input type="text" id="searchInput" placeholder="Rechercher…" oninput="renderCards()">
       </div>
+      <button class="btn-secondary" onclick="openExportModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exporter
+      </button>
       <button class="btn-primary" onclick="openAddModal()">
         <span>+</span> Ajouter
       </button>
@@ -598,22 +783,82 @@ select.form-input { cursor: pointer; }
       <input class="form-input" type="text" id="inputNote" placeholder="Pourquoi tu sauvegardes ça…">
     </div>
     <div class="form-group">
+      <label class="form-label">PDF (optionnel)</label>
+      <input class="form-input" type="file" id="inputPdf" accept=".pdf" style="padding:5px 11px;cursor:pointer">
+      <div style="font-size:10px;color:var(--text-3);margin-top:4px" id="pdfStatus"></div>
+    </div>
+    <div class="form-group">
       <label class="form-label">Dossier</label>
       <select class="form-input" id="inputFolder"></select>
     </div>
     <div class="form-group">
       <label class="form-label">Tags</label>
-      <div class="tag-selector" id="tagSelector">
-        <div class="tag-sel-pill" data-tag="Gen Z" onclick="toggleTag(this)">Gen Z</div>
-        <div class="tag-sel-pill" data-tag="Influence" onclick="toggleTag(this)">Influence</div>
-        <div class="tag-sel-pill" data-tag="Tendances" onclick="toggleTag(this)">Tendances</div>
-        <div class="tag-sel-pill" data-tag="Stats" onclick="toggleTag(this)">Stats</div>
-        <div class="tag-sel-pill" data-tag="Inspo" onclick="toggleTag(this)">Inspo</div>
+      <div class="tag-selector" id="tagSelector"></div>
+      <div class="tag-input-wrap">
+        <input type="text" id="customTagInput" placeholder="Ajouter un tag…" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomTag()}">
+        <button onclick="addCustomTag()">+ Ajouter</button>
       </div>
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeAddModal()">Annuler</button>
       <button class="btn-save" onclick="saveItem()">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Résumé IA -->
+<div class="modal-wrap" id="summaryModal">
+  <div class="modal summary-modal">
+    <h3 id="summaryTitle">Résumé IA</h3>
+    <div class="summary-source" id="summarySource"></div>
+    <div id="summaryBody"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeSummaryModal()">Fermer</button>
+      <button class="summary-save-btn" id="summarySaveBtn" style="display:none" onclick="saveSummaryToNote()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Sauvegarder dans la note
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Export -->
+<div class="modal-wrap" id="exportModal">
+  <div class="modal export-modal">
+    <h3>Exporter vers Claude</h3>
+    <p style="font-size:12px;color:var(--text-2);margin-bottom:16px;line-height:1.6">Génère un fichier structuré de ta veille à uploader dans un <strong>Projet Claude</strong> — tu pourras ensuite lui demander des synthèses, angles stratégiques, contradictions entre sources, etc.</p>
+
+    <div class="export-option" onclick="exportMarkdown()">
+      <div class="export-icon">📄</div>
+      <div>
+        <div class="export-label">Export Markdown complet</div>
+        <div class="export-desc">Tous tes éléments avec titres, extraits, notes et résumés IA. Format idéal pour l'uploader dans un projet Claude.</div>
+        <button class="export-btn" onclick="event.stopPropagation();exportMarkdown()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger .md
+        </button>
+      </div>
+    </div>
+
+    <div class="export-option" onclick="exportDossier()">
+      <div class="export-icon">📁</div>
+      <div>
+        <div class="export-label">Export par dossier actif</div>
+        <div class="export-desc">Exporte uniquement les éléments du dossier que tu consultes — utile pour une analyse ciblée sur un sujet.</div>
+        <button class="export-btn" onclick="event.stopPropagation();exportDossier()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger dossier
+        </button>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;padding:12px;background:#E1F5EE;border-radius:var(--radius-sm)">
+      <div style="font-size:11px;font-weight:500;color:#085041;margin-bottom:6px">Comment l'utiliser dans Claude</div>
+      <div style="font-size:11px;color:#085041;line-height:1.6">1. Va sur <strong>claude.ai → Projects</strong> et crée un projet<br>2. Dans le projet, clique <strong>"Add content"</strong> et uploade le fichier .md<br>3. Tu peux ensuite lui demander : "Fais-moi une synthèse des grandes tendances", "Quelles contradictions tu vois entre ces sources ?", "Propose-moi 5 angles créatifs pour Monoprix"…</div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeExportModal()">Fermer</button>
     </div>
   </div>
 </div>
@@ -646,10 +891,24 @@ select.form-input { cursor: pointer; }
 
 <script>
 // ─── CONFIG ────────────────────────────────────────────────
-// Remplace CLIENT_ID par ton Google OAuth Client ID
 const GOOGLE_CLIENT_ID = '51819741701-d36vbuds91akmp05l2o7fvam7ikplhe6.apps.googleusercontent.com';
 const SCOPES = 'https://www.googleapis.com/auth/drive.file';
 const FILE_NAME = 'research-board-data.json';
+
+// Default tags (always available)
+const DEFAULT_TAGS = ['Gen Z', 'Influence', 'Tendances', 'Stats', 'Inspo'];
+const TAG_COLORS = {
+  'Gen Z':      { bg: '#EEEDFE', color: '#3C3489' },
+  'Influence':  { bg: '#E1F5EE', color: '#085041' },
+  'Tendances':  { bg: '#FAEEDA', color: '#633806' },
+  'Stats':      { bg: '#FAECE7', color: '#712B13' },
+  'Inspo':      { bg: '#FBEAF0', color: '#72243E' },
+};
+const CUSTOM_TAG_STYLE = { bg: '#F1EFE8', color: '#444441' };
+
+function getTagStyle(tag) {
+  return TAG_COLORS[tag] || CUSTOM_TAG_STYLE;
+}
 
 // ─── STATE ─────────────────────────────────────────────────
 let state = {
@@ -659,6 +918,7 @@ let state = {
     { id: 'f3', name: 'Social trends', color: '#EF9F27' },
     { id: 'f4', name: 'Concurrents', color: '#D4537E' },
   ],
+  customTags: [],
   items: [
     { id: 'i1', url: 'https://linkedin.com', title: 'La Gen Z ne fait plus confiance aux marques — elle fait confiance aux créateurs', excerpt: '72% des 18-25 ans ont acheté un produit beauté via une reco créateur, contre 31% via pub classique.', note: '', source: 'linkedin', author: 'Marie Dupont', folderId: 'f1', tags: ['Gen Z','Influence','Stats'], fav: false, date: Date.now() - 2*86400000 },
     { id: 'i2', url: 'https://substack.com', title: 'The Beauty Algorithm #47 — TikTok Shop change tout', excerpt: 'Le social commerce beauté dépasse les ventes en pharmacie pour le skincare de niche.', note: '', source: 'substack', author: 'The Beauty Algorithm', folderId: 'f1', tags: ['Tendances','Gen Z'], fav: true, date: Date.now() - 4*86400000 },
@@ -729,6 +989,7 @@ async function loadFromDrive() {
       state.folders = json.folders || state.folders;
       state.items = json.items || state.items;
       state.projectName = json.projectName || state.projectName;
+      state.customTags = json.customTags || [];
     }
   } catch(e) { console.error('Drive load error', e); }
   renderAll();
@@ -736,7 +997,7 @@ async function loadFromDrive() {
 
 async function saveToDrive() {
   if (!state.accessToken) return;
-  const body = JSON.stringify({ folders: state.folders, items: state.items, projectName: state.projectName });
+  const body = JSON.stringify({ folders: state.folders, items: state.items, projectName: state.projectName, customTags: state.customTags });
   const meta = { name: FILE_NAME, mimeType: 'application/json' };
   if (!state.driveFileId) {
     const form = new FormData();
@@ -756,9 +1017,8 @@ async function saveToDrive() {
   localStorage.setItem('rb_data_local', JSON.stringify({ folders: state.folders, items: state.items, projectName: state.projectName }));
 }
 
-// Save locally always (backup when not signed in)
 function saveLocal() {
-  localStorage.setItem('rb_data_local', JSON.stringify({ folders: state.folders, items: state.items, projectName: state.projectName }));
+  localStorage.setItem('rb_data_local', JSON.stringify({ folders: state.folders, items: state.items, projectName: state.projectName, customTags: state.customTags }));
 }
 
 function loadLocal() {
@@ -769,6 +1029,7 @@ function loadLocal() {
       state.folders = d.folders || state.folders;
       state.items = d.items || state.items;
       state.projectName = d.projectName || state.projectName;
+      state.customTags = d.customTags || [];
     } catch(e) {}
   }
 }
@@ -831,6 +1092,7 @@ function getSourceStyle(source) {
     substack: { bg: '#FFF3EA', color: '#FF6719', label: 'Substack' },
     article:  { bg: '#EEEDFE', color: '#534AB7', label: 'Article' },
     video:    { bg: '#E1F5EE', color: '#0F6E56', label: 'Vidéo' },
+    pdf:      { bg: '#FAECE7', color: '#D85A30', label: 'PDF' },
   };
   return map[source] || map.article;
 }
@@ -853,13 +1115,26 @@ const SOURCE_ICONS = {
   substack: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M3 12h18M3 17l9 3 9-3V12H3v5z"/></svg>`,
   article:  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>`,
   video:    `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
+  pdf:      `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>`,
 };
 
 function renderAll() {
   document.getElementById('projectName').textContent = state.projectName;
   renderFolders();
+  renderFilterBar();
   renderCards();
   updateCounts();
+}
+
+function renderFilterBar() {
+  const allTags = [...DEFAULT_TAGS, ...state.customTags.filter(t => !DEFAULT_TAGS.includes(t))];
+  const bar = document.getElementById('filtersBar');
+  bar.innerHTML = `<div class="pill all ${state.currentTag ? 'inactive' : ''}" onclick="setTagFilter(null)" id="pill-all">Tout</div>` +
+    allTags.map(t => {
+      const s = getTagStyle(t);
+      const active = state.currentTag === t ? 'active-tag' : '';
+      return `<div class="pill ${active}" onclick="setTagFilter('${escHtml(t)}')" style="background:${s.bg};color:${s.color}">${escHtml(t)}</div>`;
+    }).join('');
 }
 
 function renderFolders() {
@@ -894,7 +1169,7 @@ function renderCards() {
   const EDIT = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
   const DEL = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>`;
 
-  if (items.length === 0) {
+  const AI = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 014 4v1h1a3 3 0 010 6h-1v1a4 4 0 01-8 0v-1H7a3 3 0 010-6h1V6a4 4 0 014-4z"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/></svg>`;
     area.innerHTML = `<div class="empty-state"><div class="empty-icon">◎</div><div>Aucun élément trouvé</div><div style="font-size:12px;color:var(--text-3)">Ajoute un lien pour commencer</div></div>`;
     return;
   }
@@ -912,12 +1187,13 @@ function renderCards() {
         <div class="card-body" onclick="editItem('${item.id}')">
           <div class="card-title">${escHtml(item.title)}</div>
           ${item.note ? `<div class="card-note">${escHtml(item.note)}</div>` : item.excerpt ? `<div class="card-excerpt">${escHtml(item.excerpt)}</div>` : ''}
-          <div class="card-tags">${item.tags.map(t => `<span class="card-tag" data-tag="${t}">${t}</span>`).join('')}</div>
+          <div class="card-tags">${item.tags.map(t => { const s = getTagStyle(t); return `<span class="card-tag" style="background:${s.bg};color:${s.color}">${escHtml(t)}</span>`; }).join('')}</div>
         </div>
         <div class="card-footer">
           <span class="card-author">${escHtml(item.author || '')}</span>
           <div class="card-actions">
             <button class="icon-btn ${item.fav ? 'fav-on' : ''}" onclick="toggleFav('${item.id}')" title="Favori">${item.fav ? STAR_FILLED : STAR}</button>
+            <button class="icon-btn" onclick="summarizeItem(event,'${item.id}')" title="Résumé IA" style="color:var(--text-3)">${AI}</button>
             <a href="${escHtml(item.url)}" target="_blank" class="icon-btn" title="Ouvrir">${EXT}</a>
             <button class="icon-btn" onclick="editItem('${item.id}')" title="Modifier">${EDIT}</button>
             <button class="icon-btn" onclick="deleteItem(event,'${item.id}')" title="Supprimer">${DEL}</button>
@@ -987,6 +1263,33 @@ function setTagFilter(tag) {
 }
 
 // ─── ADD / EDIT ITEM ────────────────────────────────────────
+function renderTagSelector(selectedTags = []) {
+  const allTags = [...DEFAULT_TAGS, ...state.customTags.filter(t => !DEFAULT_TAGS.includes(t))];
+  const sel = document.getElementById('tagSelector');
+  sel.innerHTML = allTags.map(t => {
+    const s = getTagStyle(t);
+    const isSelected = selectedTags.includes(t);
+    return `<div class="tag-sel-pill ${isSelected ? 'selected' : ''}" data-tag="${escHtml(t)}" onclick="toggleTag(this)" style="background:${s.bg};color:${s.color}">${escHtml(t)}</div>`;
+  }).join('');
+}
+
+function addCustomTag() {
+  const input = document.getElementById('customTagInput');
+  const val = input.value.trim();
+  if (!val) return;
+  if (!state.customTags.includes(val) && !DEFAULT_TAGS.includes(val)) {
+    state.customTags.push(val);
+    saveLocal(); saveToDrive();
+  }
+  const currentSelected = [...document.querySelectorAll('.tag-sel-pill.selected')].map(p => p.dataset.tag);
+  renderTagSelector([...currentSelected, val]);
+  // Auto-select the new tag
+  const newPill = [...document.querySelectorAll('.tag-sel-pill')].find(p => p.dataset.tag === val);
+  if (newPill) newPill.classList.add('selected');
+  input.value = '';
+  input.focus();
+}
+
 function openAddModal(prefill) {
   editingItemId = null;
   document.getElementById('modalTitle').textContent = 'Sauvegarder un contenu';
@@ -995,10 +1298,10 @@ function openAddModal(prefill) {
   document.getElementById('inputExcerpt').value = prefill?.excerpt || '';
   document.getElementById('inputNote').value = prefill?.note || '';
   document.getElementById('urlLoading').textContent = '';
+  document.getElementById('pdfStatus').textContent = '';
+  document.getElementById('inputPdf').value = '';
   populateFolderSelect(state.currentFolder);
-  document.querySelectorAll('.tag-sel-pill').forEach(p => {
-    p.classList.toggle('selected', (prefill?.tags || []).includes(p.dataset.tag));
-  });
+  renderTagSelector(prefill?.tags || []);
   document.getElementById('addModal').classList.add('open');
   setTimeout(() => document.getElementById('inputUrl').focus(), 100);
   if (prefill?.url) onUrlChange();
@@ -1014,8 +1317,10 @@ function editItem(id) {
   document.getElementById('inputExcerpt').value = item.excerpt;
   document.getElementById('inputNote').value = item.note || '';
   document.getElementById('urlLoading').textContent = '';
+  document.getElementById('pdfStatus').textContent = item.source === 'pdf' ? '📄 PDF existant — uploade un nouveau pour remplacer' : '';
+  document.getElementById('inputPdf').value = '';
   populateFolderSelect(item.folderId);
-  document.querySelectorAll('.tag-sel-pill').forEach(p => p.classList.toggle('selected', item.tags.includes(p.dataset.tag)));
+  renderTagSelector(item.tags);
   document.getElementById('addModal').classList.add('open');
 }
 
@@ -1028,22 +1333,54 @@ function populateFolderSelect(selectedId) {
 
 function toggleTag(el) { el.classList.toggle('selected'); }
 
-function saveItem() {
+async function saveItem() {
   const url = document.getElementById('inputUrl').value.trim();
   const title = document.getElementById('inputTitle').value.trim();
-  if (!url) { alert('L\'URL est obligatoire.'); return; }
-  if (!title) { alert('Le titre est obligatoire.'); return; }
+  const pdfFile = document.getElementById('inputPdf').files[0];
+  const isPdf = !!pdfFile;
+
+  if (!isPdf && !url) { alert('URL ou PDF obligatoire.'); return; }
+  if (!title && !isPdf) { alert('Le titre est obligatoire.'); return; }
   const tags = [...document.querySelectorAll('.tag-sel-pill.selected')].map(p => p.dataset.tag);
   const folderId = document.getElementById('inputFolder').value;
   const excerpt = document.getElementById('inputExcerpt').value.trim();
   const note = document.getElementById('inputNote').value.trim();
-  const source = detectSource(url);
+
+  let source = isPdf ? 'pdf' : detectSource(url);
+  let finalTitle = title;
+  let pdfText = '';
+  let finalUrl = url;
+
+  if (isPdf) {
+    document.getElementById('pdfStatus').textContent = 'Lecture du PDF…';
+    try {
+      pdfText = await extractPdfText(pdfFile);
+      if (!finalTitle) finalTitle = pdfFile.name.replace('.pdf', '');
+      finalUrl = finalUrl || 'pdf://' + pdfFile.name;
+    } catch(e) {
+      document.getElementById('pdfStatus').textContent = 'Lecture PDF impossible — texte non disponible.';
+    }
+  }
+
+  const baseItem = {
+    url: finalUrl,
+    title: finalTitle || pdfFile?.name || 'Sans titre',
+    excerpt: excerpt || pdfText.slice(0, 300),
+    pdfText: pdfText.slice(0, 8000),
+    note,
+    source,
+    author: isPdf ? pdfFile?.name : (new URL(finalUrl).hostname.replace('www.','')),
+    folderId,
+    tags,
+    fav: false,
+    date: Date.now()
+  };
 
   if (editingItemId) {
     const item = state.items.find(i => i.id === editingItemId);
-    if (item) Object.assign(item, { url, title, excerpt, note, tags, folderId, source });
+    if (item) Object.assign(item, { ...baseItem, fav: item.fav, date: item.date, id: item.id });
   } else {
-    state.items.unshift({ id: 'i' + Date.now(), url, title, excerpt, note, source, author: new URL(url).hostname.replace('www.',''), folderId, tags, fav: false, date: Date.now() });
+    state.items.unshift({ id: 'i' + Date.now(), ...baseItem });
   }
   closeAddModal();
   saveLocal();
@@ -1125,10 +1462,237 @@ function checkBookmarkletParams() {
   }
 }
 
+// ─── PDF TEXT EXTRACTION ────────────────────────────────────
+async function extractPdfText(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const typedArray = new Uint8Array(e.target.result);
+        // Use PDF.js if available, otherwise extract raw text
+        if (window.pdfjsLib) {
+          const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+          let text = '';
+          for (let i = 1; i <= Math.min(pdf.numPages, 15); i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            text += content.items.map(s => s.str).join(' ') + '\n';
+          }
+          resolve(text.trim());
+        } else {
+          // Fallback: decode as string and extract readable text
+          const decoder = new TextDecoder('utf-8', { fatal: false });
+          const text = decoder.decode(typedArray);
+          const readable = text.replace(/[^\x20-\x7E\n\r\t\u00C0-\u024F]/g, ' ').replace(/\s+/g, ' ').trim();
+          resolve(readable.slice(0, 8000));
+        }
+      } catch(err) { reject(err); }
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+// ─── EXPORT TO CLAUDE ───────────────────────────────────────
+function openExportModal() { document.getElementById('exportModal').classList.add('open'); }
+function closeExportModal() { document.getElementById('exportModal').classList.remove('open'); }
+
+function buildMarkdown(items) {
+  const folder = state.currentView === 'folder'
+    ? state.folders.find(f => f.id === state.currentFolder)
+    : null;
+  const projectLine = `# Veille Research Board${folder ? ' — ' + folder.name : ''}\n\nExporté le ${new Date().toLocaleDateString('fr-FR')} · ${items.length} éléments\n\n---\n\n`;
+
+  return projectLine + items.map((item, i) => {
+    const lines = [
+      `## ${i+1}. ${item.title}`,
+      `**Source :** ${item.source.toUpperCase()} · ${item.author || ''}`,
+      item.url && !item.url.startsWith('pdf://') ? `**URL :** ${item.url}` : '',
+      `**Tags :** ${item.tags.join(', ') || '—'}`,
+      `**Date :** ${new Date(item.date).toLocaleDateString('fr-FR')}`,
+      '',
+    ];
+    if (item.excerpt) lines.push(`### Extrait\n${item.excerpt}\n`);
+    if (item.pdfText) lines.push(`### Contenu PDF\n${item.pdfText.slice(0, 2000)}${item.pdfText.length > 2000 ? '\n[…texte tronqué]' : ''}\n`);
+    if (item.note) lines.push(`### Note personnelle\n${item.note}\n`);
+    lines.push('---\n');
+    return lines.filter(Boolean).join('\n');
+  }).join('\n');
+}
+
+function downloadMarkdown(content, filename) {
+  const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function exportMarkdown() {
+  const items = state.items.sort((a,b) => b.date - a.date);
+  downloadMarkdown(buildMarkdown(items), `research-board-complet-${new Date().toISOString().slice(0,10)}.md`);
+}
+
+function exportDossier() {
+  let items = state.items;
+  const folder = state.currentView === 'folder' ? state.folders.find(f => f.id === state.currentFolder) : null;
+  if (folder) items = items.filter(i => i.folderId === folder.id);
+  const name = folder ? folder.name.toLowerCase().replace(/\s+/g,'-') : 'selection';
+  downloadMarkdown(buildMarkdown(items.sort((a,b) => b.date - a.date)), `research-board-${name}-${new Date().toISOString().slice(0,10)}.md`);
+}
+
+// ─── AI SUMMARY ─────────────────────────────────────────────
+let summaryItemId = null;
+let lastSummaryText = '';
+
+async function summarizeItem(e, id) {
+  e.stopPropagation();
+  const item = state.items.find(i => i.id === id);
+  if (!item) return;
+  summaryItemId = id;
+  lastSummaryText = '';
+
+  document.getElementById('summaryTitle').textContent = 'Résumé IA';
+  document.getElementById('summarySource').innerHTML = `
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    <a href="${escHtml(item.url)}" target="_blank" style="color:var(--text-3);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:360px">${escHtml(item.title)}</a>`;
+  document.getElementById('summarySaveBtn').style.display = 'none';
+  document.getElementById('summaryBody').innerHTML = `
+    <div class="summary-loading">
+      <div class="summary-spinner"></div>
+      Analyse du contenu en cours…
+    </div>`;
+  document.getElementById('summaryModal').classList.add('open');
+
+  try {
+    // Fetch page content via proxy (skip for PDFs)
+    let pageText = item.pdfText || item.excerpt || '';
+    if (item.source !== 'pdf' && !pageText) {
+      try {
+        const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(item.url)}`;
+        const res = await fetch(proxy, { signal: AbortSignal.timeout(10000) });
+        const json = await res.json();
+        const html = json.contents || '';
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        doc.querySelectorAll('script,style,nav,header,footer,aside').forEach(el => el.remove());
+        const body = doc.querySelector('article') || doc.querySelector('main') || doc.body;
+        pageText = (body?.innerText || body?.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 6000);
+      } catch(e) { /* use excerpt as fallback */ }
+    }
+
+    if (!pageText && !item.note) {
+      throw new Error('Contenu insuffisant pour générer un résumé.');
+    }
+
+    const context = [
+      item.title ? `Titre : ${item.title}` : '',
+      item.author ? `Source : ${item.author}` : '',
+      pageText ? `Contenu :\n${pageText}` : '',
+      item.note ? `Note personnelle : ${item.note}` : '',
+    ].filter(Boolean).join('\n\n');
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `Tu es un assistant de veille pour une consultante senior en social media et influence marketing. 
+Tu analyses des articles, posts LinkedIn et newsletters pour en extraire l'essentiel.
+Réponds UNIQUEMENT en JSON valide, sans markdown ni backticks, avec cette structure exacte :
+{
+  "title": "Titre court et percutant (max 80 caractères, sans guillemets, en français)",
+  "points": ["point 1", "point 2", "point 3", "point 4"],
+  "verdict": "1-2 phrases sur la pertinence stratégique de ce contenu pour une mission social media / influence beauté"
+}
+Le titre doit capturer l'idée centrale du contenu — précis, informatif, sans être clickbait.
+Les points doivent être concis (1-2 phrases max chacun), en français, factuels et actionnables.`,
+        messages: [{ role: 'user', content: `Analyse ce contenu et génère un résumé structuré :\n\n${context}` }]
+      })
+    });
+
+    const data = await response.json();
+    const raw = data.content?.[0]?.text || '';
+    let parsed;
+    try {
+      parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    } catch(e) {
+      throw new Error('Format de réponse inattendu.');
+    }
+
+    const points = parsed.points || [];
+    const verdict = parsed.verdict || '';
+    const aiTitle = parsed.title || '';
+    lastSummaryText = points.map((p,i) => `${i+1}. ${p}`).join('\n') + (verdict ? `\n\nNote stratégique : ${verdict}` : '');
+
+    document.getElementById('summaryBody').innerHTML = `
+      ${aiTitle ? `
+      <div style="margin-bottom:14px">
+        <div style="font-size:10px;font-weight:500;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Titre suggéré</div>
+        <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm)">
+          <span style="flex:1;font-size:13px;font-weight:500;color:var(--text)" id="aiTitleText">${escHtml(aiTitle)}</span>
+          <button onclick="applyAiTitle()" style="flex-shrink:0;font-size:11px;font-weight:500;padding:4px 10px;background:var(--text);color:var(--surface);border:none;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif">Appliquer</button>
+        </div>
+      </div>` : ''}
+      <div class="summary-points">
+        ${points.map((p, i) => `
+          <div class="summary-point">
+            <span class="summary-point-num">0${i+1}</span>
+            <span class="summary-point-text">${escHtml(p)}</span>
+          </div>`).join('')}
+      </div>
+      ${verdict ? `<div class="summary-verdict"><strong>Note stratégique</strong>${escHtml(verdict)}</div>` : ''}`;
+
+    document.getElementById('summarySaveBtn').style.display = 'flex';
+
+  } catch(err) {
+    document.getElementById('summaryBody').innerHTML = `
+      <div class="summary-error">
+        ${escHtml(err.message || 'Une erreur est survenue lors de la génération du résumé.')}<br><br>
+        <span style="opacity:.7">Astuce : si l'article nécessite une connexion, copie-colle son texte dans le champ "Extrait" de la carte avant de relancer le résumé.</span>
+      </div>`;
+  }
+}
+
+function applyAiTitle() {
+  if (!summaryItemId) return;
+  const item = state.items.find(i => i.id === summaryItemId);
+  const titleEl = document.getElementById('aiTitleText');
+  if (!item || !titleEl) return;
+  item.title = titleEl.textContent;
+  saveLocal();
+  saveToDrive();
+  renderAll();
+  const btn = titleEl.nextElementSibling;
+  if (btn) { btn.textContent = 'Appliqué ✓'; btn.style.opacity = '.5'; btn.disabled = true; }
+}
+
+function closeSummaryModal() {
+  document.getElementById('summaryModal').classList.remove('open');
+  summaryItemId = null;
+  lastSummaryText = '';
+}
+
+function saveSummaryToNote() {
+  if (!summaryItemId || !lastSummaryText) return;
+  const item = state.items.find(i => i.id === summaryItemId);
+  if (!item) return;
+  const existing = item.note ? item.note + '\n\n--- Résumé IA ---\n' : '--- Résumé IA ---\n';
+  item.note = existing + lastSummaryText;
+  saveLocal();
+  saveToDrive();
+  renderAll();
+  document.getElementById('summarySaveBtn').textContent = 'Sauvegardé ✓';
+  document.getElementById('summarySaveBtn').style.opacity = '.5';
+  setTimeout(closeSummaryModal, 1000);
+}
+
 // ─── KEYBOARD SHORTCUTS ─────────────────────────────────────
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openAddModal(); }
-  if (e.key === 'Escape') { closeAddModal(); closeFolderModal(); closeSidebar(); }
+  if (e.key === 'Escape') { closeAddModal(); closeFolderModal(); closeSidebar(); closeSummaryModal(); closeExportModal(); }
 });
 
 // ─── INIT ───────────────────────────────────────────────────
