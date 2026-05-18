@@ -765,27 +765,42 @@ select.form-input { cursor: pointer; }
 <div class="modal-wrap" id="addModal">
   <div class="modal">
     <h3 id="modalTitle">Sauvegarder un contenu</h3>
-    <div class="form-group">
-      <label class="form-label">URL *</label>
-      <input class="form-input" type="url" id="inputUrl" placeholder="https://…" oninput="onUrlChange()">
-      <div class="url-loading" id="urlLoading"></div>
+
+    <!-- Mode switcher -->
+    <div id="modeSwitcher" style="display:flex;gap:6px;margin-bottom:16px">
+      <button id="modeUrlBtn" onclick="switchMode('url')" style="flex:1;padding:7px;border-radius:var(--radius-sm);border:1px solid var(--text);background:var(--text);color:var(--surface);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif">🔗 Lien URL</button>
+      <button id="modePdfBtn" onclick="switchMode('pdf')" style="flex:1;padding:7px;border-radius:var(--radius-sm);border:1px solid var(--border);background:none;color:var(--text-2);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif">📄 PDF</button>
     </div>
+
+    <!-- URL mode -->
+    <div id="urlMode">
+      <div class="form-group">
+        <label class="form-label">URL</label>
+        <input class="form-input" type="url" id="inputUrl" placeholder="https://…" oninput="onUrlChange()">
+        <div class="url-loading" id="urlLoading"></div>
+      </div>
+    </div>
+
+    <!-- PDF mode -->
+    <div id="pdfMode" style="display:none">
+      <div class="form-group">
+        <label class="form-label">Fichier PDF</label>
+        <input class="form-input" type="file" id="inputPdf" accept=".pdf" style="padding:5px 11px;cursor:pointer" onchange="onPdfChange()">
+        <div style="font-size:11px;color:var(--text-3);margin-top:5px;min-height:16px" id="pdfStatus"></div>
+      </div>
+    </div>
+
     <div class="form-group">
       <label class="form-label">Titre</label>
       <input class="form-input" type="text" id="inputTitle" placeholder="Titre du contenu">
     </div>
     <div class="form-group">
-      <label class="form-label">Extrait / texte sélectionné</label>
-      <textarea class="form-input" id="inputExcerpt" placeholder="Colle ici le texte sélectionné ou un extrait clé…"></textarea>
+      <label class="form-label">Extrait</label>
+      <textarea class="form-input" id="inputExcerpt" placeholder="Extrait clé ou texte sélectionné…" style="min-height:60px"></textarea>
     </div>
     <div class="form-group">
-      <label class="form-label">Ta note personnelle</label>
+      <label class="form-label">Note personnelle</label>
       <input class="form-input" type="text" id="inputNote" placeholder="Pourquoi tu sauvegardes ça…">
-    </div>
-    <div class="form-group">
-      <label class="form-label">PDF (optionnel)</label>
-      <input class="form-input" type="file" id="inputPdf" accept=".pdf" style="padding:5px 11px;cursor:pointer">
-      <div style="font-size:10px;color:var(--text-3);margin-top:4px" id="pdfStatus"></div>
     </div>
     <div class="form-group">
       <label class="form-label">Dossier</label>
@@ -1294,6 +1309,7 @@ function addCustomTag() {
 
 function openAddModal(prefill) {
   editingItemId = null;
+  window._pendingPdfText = '';
   document.getElementById('modalTitle').textContent = 'Sauvegarder un contenu';
   document.getElementById('inputUrl').value = prefill?.url || '';
   document.getElementById('inputTitle').value = prefill?.title || '';
@@ -1301,11 +1317,12 @@ function openAddModal(prefill) {
   document.getElementById('inputNote').value = prefill?.note || '';
   document.getElementById('urlLoading').textContent = '';
   document.getElementById('pdfStatus').textContent = '';
+  document.getElementById('pdfStatus').style.color = 'var(--text-3)';
   document.getElementById('inputPdf').value = '';
   populateFolderSelect(state.currentFolder);
   renderTagSelector(prefill?.tags || []);
+  switchMode('url');
   document.getElementById('addModal').classList.add('open');
-  setTimeout(() => document.getElementById('inputUrl').focus(), 100);
   if (prefill?.url) onUrlChange();
 }
 
@@ -1313,16 +1330,20 @@ function editItem(id) {
   const item = state.items.find(i => i.id === id);
   if (!item) return;
   editingItemId = id;
+  window._pendingPdfText = item.pdfText || '';
   document.getElementById('modalTitle').textContent = 'Modifier';
-  document.getElementById('inputUrl').value = item.url;
+  document.getElementById('inputUrl').value = item.source === 'pdf' ? '' : (item.url || '');
   document.getElementById('inputTitle').value = item.title;
   document.getElementById('inputExcerpt').value = item.excerpt;
   document.getElementById('inputNote').value = item.note || '';
   document.getElementById('urlLoading').textContent = '';
-  document.getElementById('pdfStatus').textContent = item.source === 'pdf' ? '📄 PDF existant — uploade un nouveau pour remplacer' : '';
   document.getElementById('inputPdf').value = '';
+  const statusEl = document.getElementById('pdfStatus');
+  statusEl.style.color = 'var(--text-3)';
+  statusEl.textContent = item.source === 'pdf' ? '📄 PDF existant — uploade un nouveau pour remplacer' : '';
   populateFolderSelect(item.folderId);
   renderTagSelector(item.tags);
+  switchMode(item.source === 'pdf' ? 'pdf' : 'url');
   document.getElementById('addModal').classList.add('open');
 }
 
@@ -1336,42 +1357,41 @@ function populateFolderSelect(selectedId) {
 function toggleTag(el) { el.classList.toggle('selected'); }
 
 async function saveItem() {
+  const isPdf = currentMode === 'pdf';
   const url = document.getElementById('inputUrl').value.trim();
   const title = document.getElementById('inputTitle').value.trim();
   const pdfFile = document.getElementById('inputPdf').files[0];
-  const isPdf = !!pdfFile;
-
-  if (!isPdf && !url) { alert('URL ou PDF obligatoire.'); return; }
-  if (!title && !isPdf) { alert('Le titre est obligatoire.'); return; }
-  const tags = [...document.querySelectorAll('.tag-sel-pill.selected')].map(p => p.dataset.tag);
-  const folderId = document.getElementById('inputFolder').value;
   const excerpt = document.getElementById('inputExcerpt').value.trim();
   const note = document.getElementById('inputNote').value.trim();
+  const tags = [...document.querySelectorAll('.tag-sel-pill.selected')].map(p => p.dataset.tag);
+  const folderId = document.getElementById('inputFolder').value;
 
-  let source = isPdf ? 'pdf' : detectSource(url);
-  let finalTitle = title;
-  let pdfText = '';
-  let finalUrl = url;
+  if (isPdf && !pdfFile && !editingItemId) { alert('Sélectionne un fichier PDF.'); return; }
+  if (!isPdf && !url) { alert('L\'URL est obligatoire.'); return; }
+  if (!title) { alert('Le titre est obligatoire.'); return; }
 
-  if (isPdf) {
-    document.getElementById('pdfStatus').textContent = 'Lecture du PDF…';
-    try {
-      pdfText = await extractPdfText(pdfFile);
-      if (!finalTitle) finalTitle = pdfFile.name.replace('.pdf', '');
-      finalUrl = finalUrl || 'pdf://' + pdfFile.name;
-    } catch(e) {
-      document.getElementById('pdfStatus').textContent = 'Lecture PDF impossible — texte non disponible.';
-    }
+  // PDF text: use already-extracted text (from onPdfChange) or existing item's pdfText
+  let pdfText = window._pendingPdfText || '';
+  if (isPdf && pdfFile && !pdfText) {
+    // Fallback extraction if onPdfChange wasn't triggered
+    try { pdfText = await extractPdfText(pdfFile); } catch(e) {}
   }
+  if (!isPdf) pdfText = '';
+
+  const source = isPdf ? 'pdf' : detectSource(url);
+  const author = isPdf
+    ? (pdfFile?.name || 'PDF')
+    : (url ? new URL(url).hostname.replace('www.', '') : '');
+  const finalUrl = isPdf ? '' : url;
 
   const baseItem = {
     url: finalUrl,
-    title: finalTitle || pdfFile?.name || 'Sans titre',
-    excerpt: excerpt || pdfText.slice(0, 300),
+    title,
+    excerpt,
     pdfText: pdfText.slice(0, 8000),
     note,
     source,
-    author: isPdf ? pdfFile?.name : (new URL(finalUrl).hostname.replace('www.','')),
+    author,
     folderId,
     tags,
     fav: false,
@@ -1384,6 +1404,7 @@ async function saveItem() {
   } else {
     state.items.unshift({ id: 'i' + Date.now(), ...baseItem });
   }
+  window._pendingPdfText = '';
   closeAddModal();
   saveLocal();
   saveToDrive();
@@ -1464,35 +1485,112 @@ function checkBookmarkletParams() {
   }
 }
 
-// ─── PDF TEXT EXTRACTION ────────────────────────────────────
-async function extractPdfText(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      try {
-        const typedArray = new Uint8Array(e.target.result);
-        // Use PDF.js if available, otherwise extract raw text
-        if (window.pdfjsLib) {
-          const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
-          let text = '';
-          for (let i = 1; i <= Math.min(pdf.numPages, 15); i++) {
-            const page = await pdf.getPage(i);
-            const content = await page.getTextContent();
-            text += content.items.map(s => s.str).join(' ') + '\n';
-          }
-          resolve(text.trim());
-        } else {
-          // Fallback: decode as string and extract readable text
-          const decoder = new TextDecoder('utf-8', { fatal: false });
-          const text = decoder.decode(typedArray);
-          const readable = text.replace(/[^\x20-\x7E\n\r\t\u00C0-\u024F]/g, ' ').replace(/\s+/g, ' ').trim();
-          resolve(readable.slice(0, 8000));
-        }
-      } catch(err) { reject(err); }
+// ─── PDF TEXT EXTRACTION (via PDF.js CDN) ───────────────────
+let pdfJsLoaded = false;
+async function loadPdfJs() {
+  if (pdfJsLoaded || window.pdfjsLib) { pdfJsLoaded = true; return; }
+  await new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    s.onload = () => {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      pdfJsLoaded = true;
+      res();
     };
-    reader.onerror = reject;
-    reader.readAsArrayBuffer(file);
+    s.onerror = rej;
+    document.head.appendChild(s);
   });
+}
+
+async function extractPdfText(file) {
+  await loadPdfJs();
+  const arrayBuffer = await file.arrayBuffer();
+  const typedArray = new Uint8Array(arrayBuffer);
+  const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+  let text = '';
+  for (let i = 1; i <= Math.min(pdf.numPages, 20); i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map(s => s.str).join(' ') + '\n';
+  }
+  return text.trim();
+}
+
+// ─── MODE SWITCHER ──────────────────────────────────────────
+let currentMode = 'url';
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('urlMode').style.display = mode === 'url' ? 'block' : 'none';
+  document.getElementById('pdfMode').style.display = mode === 'pdf' ? 'block' : 'none';
+  const urlBtn = document.getElementById('modeUrlBtn');
+  const pdfBtn = document.getElementById('modePdfBtn');
+  if (mode === 'url') {
+    urlBtn.style.background = 'var(--text)'; urlBtn.style.color = 'var(--surface)'; urlBtn.style.borderColor = 'var(--text)';
+    pdfBtn.style.background = 'none'; pdfBtn.style.color = 'var(--text-2)'; pdfBtn.style.borderColor = 'var(--border)';
+    setTimeout(() => document.getElementById('inputUrl').focus(), 50);
+  } else {
+    pdfBtn.style.background = 'var(--text)'; pdfBtn.style.color = 'var(--surface)'; pdfBtn.style.borderColor = 'var(--text)';
+    urlBtn.style.background = 'none'; urlBtn.style.color = 'var(--text-2)'; urlBtn.style.borderColor = 'var(--border)';
+  }
+}
+
+async function onPdfChange() {
+  const file = document.getElementById('inputPdf').files[0];
+  if (!file) return;
+  const statusEl = document.getElementById('pdfStatus');
+  statusEl.textContent = 'Lecture du PDF…';
+  try {
+    const text = await extractPdfText(file);
+    // Store in a temp var for saveItem to use
+    window._pendingPdfText = text;
+    // Auto-fill title if empty
+    if (!document.getElementById('inputTitle').value) {
+      document.getElementById('inputTitle').value = file.name.replace(/\.pdf$/i, '');
+    }
+    // Auto-fill excerpt with first 300 chars of clean text
+    if (!document.getElementById('inputExcerpt').value && text) {
+      document.getElementById('inputExcerpt').value = text.slice(0, 300).trim();
+    }
+    statusEl.textContent = `✓ ${file.name} — ${Math.round(text.length / 5)} mots extraits`;
+    statusEl.style.color = 'var(--tag-inf)';
+    // Auto-generate AI title + excerpt for PDF
+    if (text.length > 100) autoGeneratePdfMeta(text, file.name);
+  } catch(e) {
+    statusEl.textContent = 'Extraction impossible — remplis le titre et l\'extrait manuellement.';
+    statusEl.style.color = 'var(--tag-stats)';
+    window._pendingPdfText = '';
+  }
+}
+
+async function autoGeneratePdfMeta(text, filename) {
+  const statusEl = document.getElementById('pdfStatus');
+  statusEl.textContent = '✦ Génération du titre et de l\'extrait par IA…';
+  statusEl.style.color = 'var(--text-3)';
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        system: `Tu es un assistant de veille. Réponds UNIQUEMENT en JSON valide sans markdown ni backticks :
+{"title": "Titre court et percutant en français (max 80 chars)", "excerpt": "Résumé en 2-3 phrases des points clés en français (max 280 chars)"}`,
+        messages: [{ role: 'user', content: `Génère un titre et un extrait pour ce document PDF :\n\nFichier : ${filename}\n\nContenu (début) :\n${text.slice(0, 3000)}` }]
+      })
+    });
+    const data = await response.json();
+    const raw = data.content?.[0]?.text || '';
+    const parsed = JSON.parse(raw.trim());
+    if (parsed.title) document.getElementById('inputTitle').value = parsed.title;
+    if (parsed.excerpt) document.getElementById('inputExcerpt').value = parsed.excerpt;
+    const words = Math.round(text.length / 5);
+    statusEl.textContent = `✓ ${filename} — ${words} mots · titre et extrait générés par IA`;
+    statusEl.style.color = 'var(--tag-inf)';
+  } catch(e) {
+    statusEl.textContent = `✓ PDF lu — complète le titre et l'extrait si besoin`;
+    statusEl.style.color = 'var(--text-3)';
+  }
 }
 
 // ─── EXPORT TO CLAUDE ───────────────────────────────────────
