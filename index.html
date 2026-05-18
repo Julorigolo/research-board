@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F6F3;
+  --surface: #FFFFFF;
+  --border: #E4E2DC;
+  --border-strong: #C8C5BC;
+  --text: #1A1916;
+  --text-2: #6B6860;
+  --text-3: #A8A59E;
+  --accent: #1A1916;
+  --li: #E8F0F9;
+  --li-badge: #0A66C2;
+  --ss: #FFF3EA;
+  --ss-badge: #FF6719;
+  --art: #EEEDFE;
+  --art-badge: #534AB7;
+  --vid: #E1F5EE;
+  --vid-badge: #0F6E56;
+  --tag-genz-bg: #EEEDFE; --tag-genz: #3C3489;
+  --tag-inf-bg: #E1F5EE; --tag-inf: #085041;
+  --tag-trend-bg: #FAEEDA; --tag-trend: #633806;
+  --tag-stats-bg: #FAECE7; --tag-stats: #712B13;
+  --tag-inspo-bg: #FBEAF0; --tag-inspo: #72243E;
+  --folder-1: #7F77DD;
+  --folder-2: #1D9E75;
+  --folder-3: #EF9F27;
+  --folder-4: #D4537E;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-w: 220px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+
+.app { display: flex; height: 100vh; overflow: hidden; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sb-logo {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sb-logo h1 { font-size: 13px; font-weight: 500; letter-spacing: -.2px; }
+.sb-project {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sb-section {
+  padding: 14px 18px 5px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+}
+.sb-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 18px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-2);
+  transition: background .1s;
+  border-radius: 0;
+  user-select: none;
+}
+.sb-item:hover { background: var(--bg); color: var(--text); }
+.sb-item.active { background: var(--bg); color: var(--text); font-weight: 500; }
+.sb-item .cnt {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-3);
+  background: var(--border);
+  padding: 1px 7px;
+  border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+}
+.fdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.sb-icon { font-size: 15px; opacity: .6; }
+.sb-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 18px;
+  font-size: 12px;
+  color: var(--text-3);
+  cursor: pointer;
+}
+.sb-add:hover { color: var(--text-2); }
+.sb-footer {
+  margin-top: auto;
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: 'DM Mono', monospace;
+}
+
+/* GOOGLE AUTH BANNER */
+.auth-banner {
+  margin: 12px;
+  padding: 10px 12px;
+  background: #FAEEDA;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: #633806;
+  line-height: 1.5;
+}
+.auth-banner button {
+  display: block;
+  margin-top: 7px;
+  width: 100%;
+  padding: 5px;
+  background: #633806;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* MAIN */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.topbar h2 { font-size: 15px; font-weight: 500; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 11px;
+  width: 180px;
+}
+.search-wrap input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 13px;
+  color: var(--text);
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+}
+.search-wrap input::placeholder { color: var(--text-3); }
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--text);
+  color: var(--surface);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+  transition: opacity .15s;
+}
+.btn-primary:hover { opacity: .85; }
+
+.filters {
+  padding: 9px 20px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+.filters::-webkit-scrollbar { display: none; }
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: opacity .1s;
+  user-select: none;
+}
+.pill:hover { opacity: .8; }
+.pill.all { background: var(--text); color: var(--surface); }
+.pill.all.inactive { background: var(--border); color: var(--text-2); }
+.pill[data-tag="Gen Z"] { background: var(--tag-genz-bg); color: var(--tag-genz); }
+.pill[data-tag="Influence"] { background: var(--tag-inf-bg); color: var(--tag-inf); }
+.pill[data-tag="Tendances"] { background: var(--tag-trend-bg); color: var(--tag-trend); }
+.pill[data-tag="Stats"] { background: var(--tag-stats-bg); color: var(--tag-stats); }
+.pill[data-tag="Inspo"] { background: var(--tag-inspo-bg); color: var(--tag-inspo); }
+.pill.active-tag { outline: 2px solid currentColor; outline-offset: 1px; }
+.pdot { width: 5px; height: 5px; border-radius: 50%; }
+
+/* CARDS */
+.cards-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 13px;
+  align-content: start;
+}
+.cards-area::-webkit-scrollbar { width: 4px; }
+.cards-area::-webkit-scrollbar-track { background: transparent; }
+.cards-area::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 4px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color .15s, transform .1s;
+}
+.card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+.card-preview {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-size: 28px;
+}
+.source-badge {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 20px;
+  color: #fff;
+}
+.card-date {
+  position: absolute;
+  bottom: 5px;
+  right: 8px;
+  font-size: 10px;
+  color: var(--text-3);
+  font-family: 'DM Mono', monospace;
+}
+.card-body { padding: 11px 12px 10px; }
+.card-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.45;
+  margin-bottom: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-note {
+  font-size: 11px;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-style: italic;
+}
+.card-excerpt {
+  font-size: 11px;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.card-tag {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 20px;
+}
+.card-tag[data-tag="Gen Z"] { background: var(--tag-genz-bg); color: var(--tag-genz); }
+.card-tag[data-tag="Influence"] { background: var(--tag-inf-bg); color: var(--tag-inf); }
+.card-tag[data-tag="Tendances"] { background: var(--tag-trend-bg); color: var(--tag-trend); }
+.card-tag[data-tag="Stats"] { background: var(--tag-stats-bg); color: var(--tag-stats); }
+.card-tag[data-tag="Inspo"] { background: var(--tag-inspo-bg); color: var(--tag-inspo); }
+.card-footer {
+  padding: 7px 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-author { font-size: 10px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
+.card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-3);
+  font-size: 15px;
+  padding: 2px;
+  line-height: 1;
+  transition: color .1s;
+}
+.icon-btn:hover { color: var(--text); }
+.icon-btn.fav-on { color: #EF9F27; }
+
+.card-add-placeholder {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 190px;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.card-add-placeholder:hover { border-color: var(--border-strong); }
+.card-add-placeholder div { text-align: center; color: var(--text-3); font-size: 12px; }
+.card-add-placeholder .plus-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+
+/* EMPTY STATE */
+.empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--text-3);
+  font-size: 13px;
+  gap: 8px;
+  text-align: center;
+}
+.empty-icon { font-size: 32px; opacity: .4; }
+
+/* MODAL OVERLAY */
+.modal-wrap {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,25,22,.45);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-wrap.open { display: flex; }
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal h3 { font-size: 15px; font-weight: 500; margin-bottom: 18px; }
+.form-group { margin-bottom: 14px; }
+.form-label { font-size: 11px; font-weight: 500; color: var(--text-2); margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: .5px; }
+.form-input {
+  width: 100%;
+  font-size: 13px;
+  padding: 8px 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color .15s;
+}
+.form-input:focus { border-color: var(--border-strong); }
+.form-input::placeholder { color: var(--text-3); }
+textarea.form-input { resize: vertical; min-height: 70px; line-height: 1.5; }
+select.form-input { cursor: pointer; }
+.tag-selector { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag-sel-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: outline .1s;
+  user-select: none;
+}
+.tag-sel-pill[data-tag="Gen Z"] { background: var(--tag-genz-bg); color: var(--tag-genz); }
+.tag-sel-pill[data-tag="Influence"] { background: var(--tag-inf-bg); color: var(--tag-inf); }
+.tag-sel-pill[data-tag="Tendances"] { background: var(--tag-trend-bg); color: var(--tag-trend); }
+.tag-sel-pill[data-tag="Stats"] { background: var(--tag-stats-bg); color: var(--tag-stats); }
+.tag-sel-pill[data-tag="Inspo"] { background: var(--tag-inspo-bg); color: var(--tag-inspo); }
+.tag-sel-pill.selected { outline: 2px solid currentColor; outline-offset: 1px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+.btn-cancel {
+  padding: 7px 16px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text-2);
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-save {
+  padding: 7px 18px;
+  background: var(--text);
+  color: var(--surface);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* LOADING STATE */
+.url-loading { font-size: 11px; color: var(--text-3); margin-top: 5px; height: 14px; }
+
+/* FOLDER MODAL */
+.folder-modal { max-width: 320px; }
+
+/* MOBILE */
+@media (max-width: 640px) {
+  .sidebar { display: none; }
+  .sidebar.open { display: flex; position: fixed; inset: 0; z-index: 50; width: 100%; max-width: 280px; }
+  .search-wrap { width: 130px; }
+  .topbar { padding: 10px 14px; gap: 8px; }
+  .filters { padding: 8px 14px; }
+  .cards-area { padding: 14px; grid-template-columns: 1fr; }
+  .menu-btn { display: flex !important; }
+}
+.menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--text);
+  padding: 2px;
+}
+.overlay-sidebar {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.3);
+  z-index: 49;
+}
+.overlay-sidebar.open { display: block; }
+
+/* FOLDER DELETE */
+.sb-item .del-folder {
+  display: none;
+  margin-left: 4px;
+  color: var(--text-3);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.sb-item:hover .del-folder { display: inline; }
+.sb-item .del-folder:hover { color: #E24B4A; }
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- SIDEBAR OVERLAY (mobile) -->
+  <div class="overlay-sidebar" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <h1>Research board</h1>
+      <div class="sb-project" id="projectName">Chargement…</div>
+    </div>
+
+    <div id="authBanner" class="auth-banner" style="display:none">
+      Connecte-toi à Google Drive pour sauvegarder tes recherches.
+      <button onclick="startGoogleAuth()">Connecter Google Drive</button>
+    </div>
+
+    <div class="sb-section">Dossiers</div>
+    <div id="folderList"></div>
+    <div class="sb-add" onclick="openFolderModal()">
+      <span style="font-size:16px;line-height:1">+</span> Nouveau dossier
+    </div>
+
+    <div class="sb-section" style="margin-top:6px">Vues</div>
+    <div class="sb-item" onclick="setView('all')" id="view-all">
+      <span class="sb-icon">⊞</span> Tous les éléments
+      <span class="cnt" id="total-count">0</span>
+    </div>
+    <div class="sb-item" onclick="setView('fav')" id="view-fav">
+      <span class="sb-icon">☆</span> Favoris
+      <span class="cnt" id="fav-count">0</span>
+    </div>
+    <div class="sb-item" onclick="setView('recent')" id="view-recent">
+      <span class="sb-icon">◷</span> Récents
+    </div>
+
+    <div class="sb-footer" id="sb-footer">0 éléments</div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <button class="menu-btn" onclick="openSidebar()" aria-label="Menu">☰</button>
+      <h2 id="mainTitle">Tous les éléments</h2>
+      <div class="search-wrap">
+        <span style="color:var(--text-3);font-size:14px">⌕</span>
+        <input type="text" id="searchInput" placeholder="Rechercher…" oninput="renderCards()">
+      </div>
+      <button class="btn-primary" onclick="openAddModal()">
+        <span>+</span> Ajouter
+      </button>
+    </div>
+
+    <div class="filters" id="filtersBar">
+      <div class="pill all" onclick="setTagFilter(null)" id="pill-all">Tout</div>
+      <div class="pill" data-tag="Gen Z" onclick="setTagFilter('Gen Z')"><span class="pdot" style="background:var(--folder-1)"></span>Gen Z</div>
+      <div class="pill" data-tag="Influence" onclick="setTagFilter('Influence')"><span class="pdot" style="background:var(--folder-2)"></span>Influence</div>
+      <div class="pill" data-tag="Tendances" onclick="setTagFilter('Tendances')"><span class="pdot" style="background:var(--folder-3)"></span>Tendances</div>
+      <div class="pill" data-tag="Stats" onclick="setTagFilter('Stats')"><span class="pdot" style="background:#D85A30"></span>Stats</div>
+      <div class="pill" data-tag="Inspo" onclick="setTagFilter('Inspo')"><span class="pdot" style="background:var(--folder-4)"></span>Inspo</div>
+    </div>
+
+    <div class="cards-area" id="cardsArea"></div>
+  </div>
+</div>
+
+<!-- MODAL: Ajouter un lien -->
+<div class="modal-wrap" id="addModal">
+  <div class="modal">
+    <h3 id="modalTitle">Sauvegarder un contenu</h3>
+    <div class="form-group">
+      <label class="form-label">URL *</label>
+      <input class="form-input" type="url" id="inputUrl" placeholder="https://…" oninput="onUrlChange()">
+      <div class="url-loading" id="urlLoading"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Titre</label>
+      <input class="form-input" type="text" id="inputTitle" placeholder="Titre du contenu">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Extrait / texte sélectionné</label>
+      <textarea class="form-input" id="inputExcerpt" placeholder="Colle ici le texte sélectionné ou un extrait clé…"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Ta note personnelle</label>
+      <input class="form-input" type="text" id="inputNote" placeholder="Pourquoi tu sauvegardes ça…">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Dossier</label>
+      <select class="form-input" id="inputFolder"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tags</label>
+      <div class="tag-selector" id="tagSelector">
+        <div class="tag-sel-pill" data-tag="Gen Z" onclick="toggleTag(this)">Gen Z</div>
+        <div class="tag-sel-pill" data-tag="Influence" onclick="toggleTag(this)">Influence</div>
+        <div class="tag-sel-pill" data-tag="Tendances" onclick="toggleTag(this)">Tendances</div>
+        <div class="tag-sel-pill" data-tag="Stats" onclick="toggleTag(this)">Stats</div>
+        <div class="tag-sel-pill" data-tag="Inspo" onclick="toggleTag(this)">Inspo</div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddModal()">Annuler</button>
+      <button class="btn-save" onclick="saveItem()">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Nouveau dossier -->
+<div class="modal-wrap" id="folderModal">
+  <div class="modal folder-modal">
+    <h3>Nouveau dossier</h3>
+    <div class="form-group">
+      <label class="form-label">Nom du projet / dossier</label>
+      <input class="form-input" type="text" id="folderName" placeholder="Ex : Beauté Gen Z, Influence…">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Couleur</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="colorPicker">
+        <div onclick="selectColor(this,'#7F77DD')" style="width:24px;height:24px;border-radius:50%;background:#7F77DD;cursor:pointer;outline:3px solid #7F77DD;outline-offset:2px"></div>
+        <div onclick="selectColor(this,'#1D9E75')" style="width:24px;height:24px;border-radius:50%;background:#1D9E75;cursor:pointer"></div>
+        <div onclick="selectColor(this,'#EF9F27')" style="width:24px;height:24px;border-radius:50%;background:#EF9F27;cursor:pointer"></div>
+        <div onclick="selectColor(this,'#D4537E')" style="width:24px;height:24px;border-radius:50%;background:#D4537E;cursor:pointer"></div>
+        <div onclick="selectColor(this,'#0A66C2')" style="width:24px;height:24px;border-radius:50%;background:#0A66C2;cursor:pointer"></div>
+        <div onclick="selectColor(this,'#D85A30')" style="width:24px;height:24px;border-radius:50%;background:#D85A30;cursor:pointer"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeFolderModal()">Annuler</button>
+      <button class="btn-save" onclick="saveFolder()">Créer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── CONFIG ────────────────────────────────────────────────
+// Remplace CLIENT_ID par ton Google OAuth Client ID
+const GOOGLE_CLIENT_ID = 'PASTE_YOUR_GOOGLE_CLIENT_ID_HERE';
+const SCOPES = 'https://www.googleapis.com/auth/drive.file';
+const FILE_NAME = 'research-board-data.json';
+
+// ─── STATE ─────────────────────────────────────────────────
+let state = {
+  folders: [
+    { id: 'f1', name: 'Gen Z & Beauté', color: '#7F77DD' },
+    { id: 'f2', name: 'Influence', color: '#1D9E75' },
+    { id: 'f3', name: 'Social trends', color: '#EF9F27' },
+    { id: 'f4', name: 'Concurrents', color: '#D4537E' },
+  ],
+  items: [
+    { id: 'i1', url: 'https://linkedin.com', title: 'La Gen Z ne fait plus confiance aux marques — elle fait confiance aux créateurs', excerpt: '72% des 18-25 ans ont acheté un produit beauté via une reco créateur, contre 31% via pub classique.', note: '', source: 'linkedin', author: 'Marie Dupont', folderId: 'f1', tags: ['Gen Z','Influence','Stats'], fav: false, date: Date.now() - 2*86400000 },
+    { id: 'i2', url: 'https://substack.com', title: 'The Beauty Algorithm #47 — TikTok Shop change tout', excerpt: 'Le social commerce beauté dépasse les ventes en pharmacie pour le skincare de niche.', note: '', source: 'substack', author: 'The Beauty Algorithm', folderId: 'f1', tags: ['Tendances','Gen Z'], fav: true, date: Date.now() - 4*86400000 },
+    { id: 'i3', url: 'https://lsa-conso.fr', title: 'Sephora vs. Monoprix — deux visions de la beauté accessible', excerpt: 'LSA explore comment la GD réinvente son rayon face au clean beauty et aux attentes Gen Z.', note: '', source: 'article', author: 'LSA Commerce', folderId: 'f1', tags: ['Tendances','Stats'], fav: false, date: Date.now() - 7*86400000 },
+    { id: 'i4', url: 'https://youtube.com', title: 'Pourquoi les hauls beauté dominent encore TikTok en 2025', excerpt: 'Formats qui convertissent le mieux : durée, structure narrative, rôle du before/after.', note: '', source: 'video', author: '@beautyinsider', folderId: 'f1', tags: ['Influence','Inspo'], fav: false, date: Date.now() - 3*86400000 },
+    { id: 'i5', url: 'https://linkedin.com', title: 'Le « dupes culture » — menace ou opportunité pour le mass-market ?', excerpt: 'La Gen Z assume ses achats de dupes. Comment en faire une opportunité plutôt que de le subir.', note: '', source: 'linkedin', author: 'Camille Renard', folderId: 'f1', tags: ['Gen Z','Tendances'], fav: true, date: Date.now() - 5*86400000 },
+  ],
+  currentFolder: null,
+  currentView: 'all',
+  currentTag: null,
+  projectName: 'AO Monoprix — Beauté Gen Z',
+  driveFileId: null,
+  accessToken: null,
+};
+let selectedFolderColor = '#7F77DD';
+let editingItemId = null;
+let urlDebounceTimer = null;
+
+// ─── GOOGLE DRIVE ───────────────────────────────────────────
+function startGoogleAuth() {
+  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === 'PASTE_YOUR_GOOGLE_CLIENT_ID_HERE') {
+    alert('Configure ton Google Client ID dans le fichier index.html (variable GOOGLE_CLIENT_ID).\n\nConsulte le fichier SETUP.md pour les instructions.');
+    return;
+  }
+  const params = new URLSearchParams({
+    client_id: GOOGLE_CLIENT_ID,
+    redirect_uri: location.origin + location.pathname,
+    response_type: 'token',
+    scope: SCOPES,
+    include_granted_scopes: 'true',
+  });
+  location.href = 'https://accounts.google.com/o/oauth2/v2/auth?' + params;
+}
+
+function checkAuthCallback() {
+  const hash = new URLSearchParams(location.hash.replace('#',''));
+  const token = hash.get('access_token');
+  if (token) {
+    state.accessToken = token;
+    localStorage.setItem('rb_token', token);
+    history.replaceState(null,'',location.pathname);
+    loadFromDrive();
+  } else {
+    const stored = localStorage.getItem('rb_token');
+    if (stored) {
+      state.accessToken = stored;
+      loadFromDrive();
+    } else {
+      document.getElementById('authBanner').style.display = 'block';
+    }
+  }
+}
+
+async function loadFromDrive() {
+  document.getElementById('authBanner').style.display = 'none';
+  try {
+    const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=name='${FILE_NAME}' and trashed=false&fields=files(id,name)`, {
+      headers: { Authorization: `Bearer ${state.accessToken}` }
+    });
+    if (res.status === 401) { localStorage.removeItem('rb_token'); document.getElementById('authBanner').style.display = 'block'; return; }
+    const data = await res.json();
+    if (data.files && data.files.length > 0) {
+      state.driveFileId = data.files[0].id;
+      const content = await fetch(`https://www.googleapis.com/drive/v3/files/${state.driveFileId}?alt=media`, {
+        headers: { Authorization: `Bearer ${state.accessToken}` }
+      });
+      const json = await content.json();
+      state.folders = json.folders || state.folders;
+      state.items = json.items || state.items;
+      state.projectName = json.projectName || state.projectName;
+    }
+  } catch(e) { console.error('Drive load error', e); }
+  renderAll();
+}
+
+async function saveToDrive() {
+  if (!state.accessToken) return;
+  const body = JSON.stringify({ folders: state.folders, items: state.items, projectName: state.projectName });
+  const meta = { name: FILE_NAME, mimeType: 'application/json' };
+  if (!state.driveFileId) {
+    const form = new FormData();
+    form.append('metadata', new Blob([JSON.stringify(meta)], { type: 'application/json' }));
+    form.append('file', new Blob([body], { type: 'application/json' }));
+    const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', {
+      method: 'POST', headers: { Authorization: `Bearer ${state.accessToken}` }, body: form
+    });
+    const d = await res.json();
+    state.driveFileId = d.id;
+  } else {
+    await fetch(`https://www.googleapis.com/upload/drive/v3/files/${state.driveFileId}?uploadType=media`, {
+      method: 'PATCH', headers: { Authorization: `Bearer ${state.accessToken}`, 'Content-Type': 'application/json' }, body
+    });
+  }
+  // Also save locally as backup
+  localStorage.setItem('rb_data_local', JSON.stringify({ folders: state.folders, items: state.items, projectName: state.projectName }));
+}
+
+// Save locally always (backup when not signed in)
+function saveLocal() {
+  localStorage.setItem('rb_data_local', JSON.stringify({ folders: state.folders, items: state.items, projectName: state.projectName }));
+}
+
+function loadLocal() {
+  const raw = localStorage.getItem('rb_data_local');
+  if (raw) {
+    try {
+      const d = JSON.parse(raw);
+      state.folders = d.folders || state.folders;
+      state.items = d.items || state.items;
+      state.projectName = d.projectName || state.projectName;
+    } catch(e) {}
+  }
+}
+
+// ─── META EXTRACTION (via allorigins proxy) ─────────────────
+async function extractMeta(url) {
+  if (!url || !url.startsWith('http')) return null;
+  const el = document.getElementById('urlLoading');
+  el.textContent = 'Récupération des infos…';
+  try {
+    const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    const res = await fetch(proxy, { signal: AbortSignal.timeout(8000) });
+    const json = await res.json();
+    const html = json.contents || '';
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const ogTitle = doc.querySelector('meta[property="og:title"]')?.content;
+    const title = ogTitle || doc.title || '';
+    const ogDesc = doc.querySelector('meta[property="og:description"]')?.content;
+    const desc = doc.querySelector('meta[name="description"]')?.content;
+    const excerpt = ogDesc || desc || '';
+    const ogSite = doc.querySelector('meta[property="og:site_name"]')?.content || '';
+    el.textContent = title ? 'Infos récupérées ✓' : 'Titre non trouvé';
+    setTimeout(() => { el.textContent = ''; }, 2000);
+    return { title: title.slice(0, 120), excerpt: excerpt.slice(0, 280), author: ogSite };
+  } catch(e) {
+    el.textContent = 'Remplis manuellement';
+    setTimeout(() => { el.textContent = ''; }, 2000);
+    return null;
+  }
+}
+
+function detectSource(url) {
+  if (!url) return 'article';
+  const u = url.toLowerCase();
+  if (u.includes('linkedin.com')) return 'linkedin';
+  if (u.includes('substack.com')) return 'substack';
+  if (u.includes('youtube.com') || u.includes('youtu.be') || u.includes('vimeo.com') || u.includes('tiktok.com')) return 'video';
+  return 'article';
+}
+
+function onUrlChange() {
+  clearTimeout(urlDebounceTimer);
+  const url = document.getElementById('inputUrl').value.trim();
+  if (!url || !url.startsWith('http')) return;
+  urlDebounceTimer = setTimeout(async () => {
+    const meta = await extractMeta(url);
+    if (meta) {
+      if (!document.getElementById('inputTitle').value) document.getElementById('inputTitle').value = meta.title;
+      if (!document.getElementById('inputExcerpt').value) document.getElementById('inputExcerpt').value = meta.excerpt;
+      if (!document.getElementById('inputNote').value && meta.author) {}
+    }
+  }, 800);
+}
+
+// ─── RENDER ─────────────────────────────────────────────────
+function getSourceStyle(source) {
+  const map = {
+    linkedin: { bg: '#E8F0F9', color: '#0A66C2', label: 'LinkedIn' },
+    substack: { bg: '#FFF3EA', color: '#FF6719', label: 'Substack' },
+    article:  { bg: '#EEEDFE', color: '#534AB7', label: 'Article' },
+    video:    { bg: '#E1F5EE', color: '#0F6E56', label: 'Vidéo' },
+  };
+  return map[source] || map.article;
+}
+
+function relativeDate(ts) {
+  const d = Date.now() - ts;
+  const m = Math.floor(d / 60000);
+  if (m < 60) return `il y a ${m}min`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `il y a ${h}h`;
+  const days = Math.floor(h / 24);
+  if (days < 7) return `il y a ${days}j`;
+  const weeks = Math.floor(days / 7);
+  if (weeks < 5) return `il y a ${weeks}sem`;
+  return `il y a ${Math.floor(days/30)}mois`;
+}
+
+const SOURCE_ICONS = {
+  linkedin: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="4"/><line x1="8" y1="11" x2="8" y2="17"/><line x1="8" y1="7" x2="8" y2="8.5"/><path d="M12 11v6M12 11a3 3 0 016 0v6"/></svg>`,
+  substack: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M3 12h18M3 17l9 3 9-3V12H3v5z"/></svg>`,
+  article:  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>`,
+  video:    `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
+};
+
+function renderAll() {
+  document.getElementById('projectName').textContent = state.projectName;
+  renderFolders();
+  renderCards();
+  updateCounts();
+}
+
+function renderFolders() {
+  const list = document.getElementById('folderList');
+  list.innerHTML = state.folders.map(f => `
+    <div class="sb-item ${state.currentFolder === f.id && state.currentView === 'folder' ? 'active' : ''}" onclick="setFolder('${f.id}')">
+      <span class="fdot" style="background:${f.color}"></span>
+      <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.name}</span>
+      <span class="cnt">${state.items.filter(i => i.folderId === f.id).length}</span>
+      <span class="del-folder" onclick="deleteFolder(event,'${f.id}')" title="Supprimer">✕</span>
+    </div>
+  `).join('');
+}
+
+function getVisibleItems() {
+  let items = [...state.items];
+  if (state.currentView === 'folder') items = items.filter(i => i.folderId === state.currentFolder);
+  if (state.currentView === 'fav') items = items.filter(i => i.fav);
+  if (state.currentView === 'recent') items = items.sort((a,b) => b.date - a.date).slice(0, 20);
+  if (state.currentTag) items = items.filter(i => i.tags.includes(state.currentTag));
+  const q = document.getElementById('searchInput')?.value?.toLowerCase().trim();
+  if (q) items = items.filter(i => i.title.toLowerCase().includes(q) || i.excerpt.toLowerCase().includes(q) || i.note.toLowerCase().includes(q));
+  return items.sort((a,b) => b.date - a.date);
+}
+
+function renderCards() {
+  const area = document.getElementById('cardsArea');
+  const items = getVisibleItems();
+  const STAR = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  const STAR_FILLED = `<svg width="15" height="15" viewBox="0 0 24 24" fill="#EF9F27" stroke="#EF9F27" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  const EXT = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+  const EDIT = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+  const DEL = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>`;
+
+  if (items.length === 0) {
+    area.innerHTML = `<div class="empty-state"><div class="empty-icon">◎</div><div>Aucun élément trouvé</div><div style="font-size:12px;color:var(--text-3)">Ajoute un lien pour commencer</div></div>`;
+    return;
+  }
+
+  area.innerHTML = items.map(item => {
+    const s = getSourceStyle(item.source);
+    const icon = SOURCE_ICONS[item.source] || SOURCE_ICONS.article;
+    return `
+      <div class="card" id="card-${item.id}">
+        <div class="card-preview" style="background:${s.bg};color:${s.color}">
+          ${icon}
+          <div class="source-badge" style="background:${s.color}">${s.label}</div>
+          <div class="card-date">${relativeDate(item.date)}</div>
+        </div>
+        <div class="card-body" onclick="editItem('${item.id}')">
+          <div class="card-title">${escHtml(item.title)}</div>
+          ${item.note ? `<div class="card-note">${escHtml(item.note)}</div>` : item.excerpt ? `<div class="card-excerpt">${escHtml(item.excerpt)}</div>` : ''}
+          <div class="card-tags">${item.tags.map(t => `<span class="card-tag" data-tag="${t}">${t}</span>`).join('')}</div>
+        </div>
+        <div class="card-footer">
+          <span class="card-author">${escHtml(item.author || '')}</span>
+          <div class="card-actions">
+            <button class="icon-btn ${item.fav ? 'fav-on' : ''}" onclick="toggleFav('${item.id}')" title="Favori">${item.fav ? STAR_FILLED : STAR}</button>
+            <a href="${escHtml(item.url)}" target="_blank" class="icon-btn" title="Ouvrir">${EXT}</a>
+            <button class="icon-btn" onclick="editItem('${item.id}')" title="Modifier">${EDIT}</button>
+            <button class="icon-btn" onclick="deleteItem(event,'${item.id}')" title="Supprimer">${DEL}</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('') + `
+    <div class="card-add-placeholder" onclick="openAddModal()">
+      <div><span class="plus-icon">+</span>Ajouter un lien</div>
+    </div>`;
+}
+
+function updateCounts() {
+  document.getElementById('total-count').textContent = state.items.length;
+  document.getElementById('fav-count').textContent = state.items.filter(i => i.fav).length;
+  document.getElementById('sb-footer').textContent = `${state.items.length} élément${state.items.length > 1 ? 's' : ''} sauvegardé${state.items.length > 1 ? 's' : ''}`;
+}
+
+function escHtml(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── NAVIGATION ─────────────────────────────────────────────
+function setFolder(id) {
+  state.currentFolder = id;
+  state.currentView = 'folder';
+  const f = state.folders.find(f => f.id === id);
+  document.getElementById('mainTitle').textContent = f ? f.name : 'Dossier';
+  updateActiveNav();
+  renderCards();
+  closeSidebar();
+}
+
+function setView(view) {
+  state.currentView = view;
+  state.currentFolder = null;
+  const labels = { all: 'Tous les éléments', fav: 'Favoris', recent: 'Récents' };
+  document.getElementById('mainTitle').textContent = labels[view] || view;
+  updateActiveNav();
+  renderCards();
+  closeSidebar();
+}
+
+function updateActiveNav() {
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.remove('active'));
+  if (state.currentView === 'folder') {
+    const folderEls = document.querySelectorAll('#folderList .sb-item');
+    const idx = state.folders.findIndex(f => f.id === state.currentFolder);
+    if (folderEls[idx]) folderEls[idx].classList.add('active');
+  } else {
+    const el = document.getElementById(`view-${state.currentView}`);
+    if (el) el.classList.add('active');
+  }
+  renderFolders();
+}
+
+function setTagFilter(tag) {
+  state.currentTag = tag;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active-tag'));
+  document.getElementById('pill-all').classList.remove('inactive');
+  if (tag) {
+    const active = document.querySelector(`.pill[data-tag="${tag}"]`);
+    if (active) active.classList.add('active-tag');
+    document.getElementById('pill-all').classList.add('inactive');
+  }
+  renderCards();
+}
+
+// ─── ADD / EDIT ITEM ────────────────────────────────────────
+function openAddModal(prefill) {
+  editingItemId = null;
+  document.getElementById('modalTitle').textContent = 'Sauvegarder un contenu';
+  document.getElementById('inputUrl').value = prefill?.url || '';
+  document.getElementById('inputTitle').value = prefill?.title || '';
+  document.getElementById('inputExcerpt').value = prefill?.excerpt || '';
+  document.getElementById('inputNote').value = prefill?.note || '';
+  document.getElementById('urlLoading').textContent = '';
+  populateFolderSelect(state.currentFolder);
+  document.querySelectorAll('.tag-sel-pill').forEach(p => {
+    p.classList.toggle('selected', (prefill?.tags || []).includes(p.dataset.tag));
+  });
+  document.getElementById('addModal').classList.add('open');
+  setTimeout(() => document.getElementById('inputUrl').focus(), 100);
+  if (prefill?.url) onUrlChange();
+}
+
+function editItem(id) {
+  const item = state.items.find(i => i.id === id);
+  if (!item) return;
+  editingItemId = id;
+  document.getElementById('modalTitle').textContent = 'Modifier';
+  document.getElementById('inputUrl').value = item.url;
+  document.getElementById('inputTitle').value = item.title;
+  document.getElementById('inputExcerpt').value = item.excerpt;
+  document.getElementById('inputNote').value = item.note || '';
+  document.getElementById('urlLoading').textContent = '';
+  populateFolderSelect(item.folderId);
+  document.querySelectorAll('.tag-sel-pill').forEach(p => p.classList.toggle('selected', item.tags.includes(p.dataset.tag)));
+  document.getElementById('addModal').classList.add('open');
+}
+
+function closeAddModal() { document.getElementById('addModal').classList.remove('open'); editingItemId = null; }
+
+function populateFolderSelect(selectedId) {
+  const sel = document.getElementById('inputFolder');
+  sel.innerHTML = state.folders.map(f => `<option value="${f.id}" ${f.id === selectedId ? 'selected' : ''}>${f.name}</option>`).join('');
+}
+
+function toggleTag(el) { el.classList.toggle('selected'); }
+
+function saveItem() {
+  const url = document.getElementById('inputUrl').value.trim();
+  const title = document.getElementById('inputTitle').value.trim();
+  if (!url) { alert('L\'URL est obligatoire.'); return; }
+  if (!title) { alert('Le titre est obligatoire.'); return; }
+  const tags = [...document.querySelectorAll('.tag-sel-pill.selected')].map(p => p.dataset.tag);
+  const folderId = document.getElementById('inputFolder').value;
+  const excerpt = document.getElementById('inputExcerpt').value.trim();
+  const note = document.getElementById('inputNote').value.trim();
+  const source = detectSource(url);
+
+  if (editingItemId) {
+    const item = state.items.find(i => i.id === editingItemId);
+    if (item) Object.assign(item, { url, title, excerpt, note, tags, folderId, source });
+  } else {
+    state.items.unshift({ id: 'i' + Date.now(), url, title, excerpt, note, source, author: new URL(url).hostname.replace('www.',''), folderId, tags, fav: false, date: Date.now() });
+  }
+  closeAddModal();
+  saveLocal();
+  saveToDrive();
+  renderAll();
+}
+
+function toggleFav(id) {
+  const item = state.items.find(i => i.id === id);
+  if (item) { item.fav = !item.fav; saveLocal(); saveToDrive(); renderAll(); }
+}
+
+function deleteItem(e, id) {
+  e.stopPropagation();
+  if (!confirm('Supprimer cet élément ?')) return;
+  state.items = state.items.filter(i => i.id !== id);
+  saveLocal(); saveToDrive(); renderAll();
+}
+
+// ─── FOLDERS ────────────────────────────────────────────────
+function openFolderModal() {
+  document.getElementById('folderName').value = '';
+  selectedFolderColor = '#7F77DD';
+  document.querySelectorAll('#colorPicker div').forEach(d => { d.style.outline = 'none'; });
+  document.querySelector('#colorPicker div').style.outline = '3px solid #7F77DD';
+  document.querySelector('#colorPicker div').style.outlineOffset = '2px';
+  document.getElementById('folderModal').classList.add('open');
+  setTimeout(() => document.getElementById('folderName').focus(), 100);
+}
+
+function closeFolderModal() { document.getElementById('folderModal').classList.remove('open'); }
+
+function selectColor(el, color) {
+  selectedFolderColor = color;
+  document.querySelectorAll('#colorPicker div').forEach(d => { d.style.outline = 'none'; d.style.outlineOffset = '0'; });
+  el.style.outline = `3px solid ${color}`;
+  el.style.outlineOffset = '2px';
+}
+
+function saveFolder() {
+  const name = document.getElementById('folderName').value.trim();
+  if (!name) return;
+  state.folders.push({ id: 'f' + Date.now(), name, color: selectedFolderColor });
+  closeFolderModal();
+  saveLocal(); saveToDrive(); renderAll();
+}
+
+function deleteFolder(e, id) {
+  e.stopPropagation();
+  if (state.items.some(i => i.folderId === id)) { alert('Ce dossier contient des éléments. Déplace-les d\'abord.'); return; }
+  if (!confirm('Supprimer ce dossier ?')) return;
+  state.folders = state.folders.filter(f => f.id !== id);
+  if (state.currentFolder === id) setView('all');
+  saveLocal(); saveToDrive(); renderAll();
+}
+
+// ─── MOBILE SIDEBAR ─────────────────────────────────────────
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+// ─── BOOKMARKLET RECEIVER ───────────────────────────────────
+// When called from bookmarklet, URL params are pre-filled
+function checkBookmarkletParams() {
+  const p = new URLSearchParams(location.search);
+  if (p.get('add') === '1') {
+    const prefill = {
+      url: p.get('url') || '',
+      title: p.get('title') || '',
+      excerpt: p.get('text') || '',
+    };
+    history.replaceState(null, '', location.pathname);
+    setTimeout(() => openAddModal(prefill), 300);
+  }
+}
+
+// ─── KEYBOARD SHORTCUTS ─────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openAddModal(); }
+  if (e.key === 'Escape') { closeAddModal(); closeFolderModal(); closeSidebar(); }
+});
+
+// ─── INIT ───────────────────────────────────────────────────
+loadLocal();
+renderAll();
+checkAuthCallback();
+checkBookmarkletParams();
+</script>
+</body>
+</html>
